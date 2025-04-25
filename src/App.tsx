@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +17,8 @@ import Faq from "./pages/Faq";
 // Admin Pages
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import GameManagement from "./pages/admin/GameManagement";
+import TeamManagement from "./pages/admin/TeamManagement";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 
