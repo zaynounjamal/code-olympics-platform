@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Award, Code, BarChart, ChessKnight } from 'lucide-react';
+import { Award, Code, BarChart, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Home = () => {
@@ -87,7 +87,7 @@ const Home = () => {
               {
                 title: 'Data Structure Challenges',
                 description: 'Solve complex problems using the right data structures.',
-                icon: ChessKnight,
+                icon: LayoutGrid,
               },
               {
                 title: 'Find the Error',
