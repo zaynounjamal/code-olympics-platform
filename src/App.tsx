@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import Faq from "./pages/Faq";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -29,13 +29,27 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           {/* User Routes */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/live" element={<LiveMatches />} />
-            <Route path="/games" element={<Games />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/faq" element={<Faq />} />
-          </Route>
+          <Route path="/" element={<Index />} />
+          <Route path="/live" element={
+            <Layout>
+              <LiveMatches />
+            </Layout>
+          } />
+          <Route path="/games" element={
+            <Layout>
+              <Games />
+            </Layout>
+          } />
+          <Route path="/leaderboard" element={
+            <Layout>
+              <Leaderboard />
+            </Layout>
+          } />
+          <Route path="/faq" element={
+            <Layout>
+              <Faq />
+            </Layout>
+          } />
           
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
