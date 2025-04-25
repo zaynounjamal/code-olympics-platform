@@ -19,6 +19,9 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import GameManagement from "./pages/admin/GameManagement";
 import TeamManagement from "./pages/admin/TeamManagement";
+import FaqManagement from "./pages/admin/FaqManagement";
+import AdminLeaderboard from "./pages/admin/AdminLeaderboard";
+import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 
@@ -60,6 +63,9 @@ const App = () => (
             <Route index element={<AdminDashboard />} />
             <Route path="games" element={<GameManagement />} />
             <Route path="teams" element={<TeamManagement />} />
+            <Route path="leaderboard" element={<AdminLeaderboard />} />
+            <Route path="faq" element={<FaqManagement />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
           
           {/* Not Found */}
