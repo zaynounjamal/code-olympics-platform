@@ -1,4 +1,3 @@
-
 export type GameLevel = 'Beginner' | 'Intermediate' | 'Advanced' | 'Monster';
 
 export type AcademicLevel = 
@@ -71,5 +70,55 @@ export const gameTypes: GameType[] = [
     difficultyLevels: ['Advanced', 'Monster'],
     academicLevels: ['3rd Year College', 'Final Year College', 'Masters', 'PhD'],
     programmingLanguages: ['Python', 'JavaScript', 'Java', 'C++']
+  },
+  {
+    id: 'debug-code',
+    title: 'Debug the Code',
+    description: 'Find and fix bugs in existing code snippets.',
+    icon: 'Code',
+    category: 'Debugging',
+    difficultyLevels: ['Beginner', 'Intermediate', 'Advanced'],
+    academicLevels: ['1st Year College', '2nd Year College', '3rd Year College'],
+    programmingLanguages: ['Python', 'JavaScript', 'Java', 'C++']
+  },
+  {
+    id: 'code-golf',
+    title: 'Code Golf Challenge',
+    description: 'Write the shortest possible code to solve a problem.',
+    icon: 'Code',
+    category: 'Code Optimization',
+    difficultyLevels: ['Intermediate', 'Advanced', 'Monster'],
+    academicLevels: ['3rd Year College', 'Final Year College', 'Masters', 'PhD'],
+    programmingLanguages: ['Python', 'JavaScript', 'Ruby']
+  },
+  {
+    id: 'algorithm-design',
+    title: 'Algorithm Design',
+    description: 'Design and implement efficient algorithms for complex problems.',
+    icon: 'LayoutGrid',
+    category: 'Algorithms',
+    difficultyLevels: ['Advanced', 'Monster'],
+    academicLevels: ['Final Year College', 'Masters', 'PhD'],
+    programmingLanguages: ['Python', 'Java', 'C++']
+  },
+  {
+    id: 'system-design',
+    title: 'System Design Challenge',
+    description: 'Design scalable system architectures and implement key components.',
+    icon: 'LayoutGrid',
+    category: 'System Design',
+    difficultyLevels: ['Advanced', 'Monster'],
+    academicLevels: ['Masters', 'PhD'],
+    programmingLanguages: ['Any']
+  },
+  {
+    id: 'security-puzzle',
+    title: 'Security Challenge',
+    description: 'Identify and fix security vulnerabilities in code.',
+    icon: 'Code',
+    category: 'Security',
+    difficultyLevels: ['Intermediate', 'Advanced', 'Monster'],
+    academicLevels: ['3rd Year College', 'Final Year College', 'Masters'],
+    programmingLanguages: ['Python', 'JavaScript', 'Java']
   }
 ];

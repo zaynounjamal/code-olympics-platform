@@ -55,7 +55,8 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            {/* Add other admin routes as they are implemented */}
+            <Route path="games" element={<GameManagement />} />
+            <Route path="teams" element={<TeamManagement />} />
           </Route>
           
           {/* Not Found */}
