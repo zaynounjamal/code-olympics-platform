@@ -1,4 +1,3 @@
-
 export type GameLevel = 'Beginner' | 'Intermediate' | 'Advanced' | 'Monster';
 
 export type AcademicLevel = 
@@ -723,6 +722,684 @@ function minCoins(coins, amount) {
       }
     ],
     programmingLanguages: ['JavaScript', 'Python', 'Java', 'C++']
-  }
+  },
+  {
+    id: 'frontend-frameworks',
+    title: 'Frontend Framework Challenge',
+    description: 'Test your skills with popular frontend frameworks like React, Vue, and Angular.',
+    icon: 'Code',
+    category: 'Web Development',
+    phase: 'Phase 1',
+    difficultyLevels: ['Intermediate', 'Advanced'],
+    academicLevels: ['2nd Year College', '3rd Year College', 'Final Year College', 'Masters'],
+    challenges: [
+      {
+        id: 'react-component',
+        title: 'React Component Architecture',
+        description: 'Build a reusable React component with proper state management and props.',
+        points: 200,
+        timeLimit: 1800,
+        codeTemplate: `// Create a reusable React counter component with the following features:
+// - Increment/decrement buttons
+// - Reset functionality
+// - Custom step size (via props)
+// - Optional max/min values (via props)
+
+import React from 'react';
+
+// TODO: Implement the Counter component
+export const Counter = () => {
+  // Your code here
+};`,
+        solution: `import React, { useState } from 'react';
+
+export const Counter = ({ 
+  initialValue = 0, 
+  step = 1, 
+  min = null, 
+  max = null 
+}) => {
+  const [count, setCount] = useState(initialValue);
+  
+  const increment = () => {
+    setCount(prevCount => {
+      const newCount = prevCount + step;
+      return max !== null ? Math.min(newCount, max) : newCount;
+    });
+  };
+  
+  const decrement = () => {
+    setCount(prevCount => {
+      const newCount = prevCount - step;
+      return min !== null ? Math.max(newCount, min) : newCount;
+    });
+  };
+  
+  const reset = () => {
+    setCount(initialValue);
+  };
+  
+  return (
+    <div className="counter">
+      <h2>Count: {count}</h2>
+      <div className="controls">
+        <button onClick={decrement}>Decrease</button>
+        <button onClick={reset}>Reset</button>
+        <button onClick={increment}>Increase</button>
+      </div>
+      <p>Step size: {step}</p>
+      {min !== null && <p>Minimum value: {min}</p>}
+      {max !== null && <p>Maximum value: {max}</p>}
+    </div>
+  );
+};`
+      },
+      {
+        id: 'vue-reactivity',
+        title: 'Vue.js Reactivity',
+        description: 'Implement a reactive system using Vue.js composition API.',
+        points: 250,
+        timeLimit: 1800,
+        codeTemplate: `// Create a Vue.js composition function that manages a shopping cart
+// The cart should support adding items, removing items, and calculating totals
+
+export default function useShoppingCart() {
+  // TODO: Implement a reactive shopping cart
+  
+  return {
+    // Export functions and reactive state here
+  };
+}`
+      }
+    ],
+    programmingLanguages: ['JavaScript', 'TypeScript']
+  },
+  {
+    id: 'python-challenges',
+    title: 'Python Masterclass',
+    description: 'Demonstrate your Python prowess with these algorithmic and data science challenges.',
+    icon: 'Code',
+    category: 'Data Science',
+    phase: 'Phase 1',
+    difficultyLevels: ['Beginner', 'Intermediate', 'Advanced'],
+    academicLevels: ['1st Year College', '2nd Year College', '3rd Year College', 'Final Year College', 'Masters', 'PhD'],
+    challenges: [
+      {
+        id: 'data-analysis',
+        title: 'Data Analysis with Pandas',
+        description: 'Analyze a dataset using pandas to extract meaningful insights.',
+        points: 200,
+        timeLimit: 1800,
+        codeTemplate: `import pandas as pd
+import numpy as np
+
+# TODO: Complete the data analysis functions below
+# The dataset represents sales data with columns: date, product_id, category, price, quantity
+
+def load_data(file_path):
+    # Load the CSV file and parse dates
+    pass
+
+def top_selling_products(df, n=5):
+    # Return the top n selling products by total revenue
+    pass
+
+def sales_trend_by_month(df):
+    # Group sales by month and return monthly totals
+    pass
+
+def category_performance(df):
+    # Analyze performance by category and return a summary
+    pass`,
+        solution: `import pandas as pd
+import numpy as np
+
+def load_data(file_path):
+    # Load the CSV file and parse dates
+    df = pd.read_csv(file_path)
+    df['date'] = pd.to_datetime(df['date'])
+    return df
+
+def top_selling_products(df, n=5):
+    # Return the top n selling products by total revenue
+    df['revenue'] = df['price'] * df['quantity']
+    product_revenue = df.groupby('product_id')['revenue'].sum().reset_index()
+    return product_revenue.sort_values('revenue', ascending=False).head(n)
+
+def sales_trend_by_month(df):
+    # Group sales by month and return monthly totals
+    df['month'] = df['date'].dt.to_period('M')
+    return df.groupby('month')['revenue'].sum().reset_index()
+
+def category_performance(df):
+    # Analyze performance by category and return a summary
+    df['revenue'] = df['price'] * df['quantity']
+    category_stats = df.groupby('category').agg({
+        'revenue': 'sum',
+        'quantity': 'sum',
+        'product_id': pd.Series.nunique
+    }).rename(columns={'product_id': 'unique_products'}).reset_index()
+    
+    category_stats['avg_price'] = df.groupby('category')['price'].mean().values
+    return category_stats`
+      },
+      {
+        id: 'machine-learning',
+        title: 'ML Model Training',
+        description: 'Implement and optimize a machine learning model for classification.',
+        points: 300,
+        timeLimit: 2400,
+        codeTemplate: `import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
+# You may use any classifier from scikit-learn or implement your own
+
+# TODO: Complete the ML pipeline functions
+
+def preprocess_data(X, y):
+    # Split data into train/test sets and scale features
+    pass
+
+def train_model(X_train, y_train):
+    # Train a classifier and return the trained model
+    pass
+
+def evaluate_model(model, X_test, y_test):
+    # Evaluate the model and return performance metrics
+    pass
+
+def optimize_hyperparameters(X_train, y_train):
+    # Use cross-validation to find optimal hyperparameters
+    pass`
+      }
+    ],
+    programmingLanguages: ['Python']
+  },
+  {
+    id: 'java-challenges',
+    title: 'Java Mastery',
+    description: 'Tackle Java challenges focusing on OOP principles, concurrency, and enterprise patterns.',
+    icon: 'LayoutGrid',
+    category: 'Software Engineering',
+    phase: 'Phase 2',
+    difficultyLevels: ['Intermediate', 'Advanced', 'Monster'],
+    academicLevels: ['2nd Year College', '3rd Year College', 'Final Year College', 'Masters'],
+    challenges: [
+      {
+        id: 'design-patterns',
+        title: 'Design Pattern Implementation',
+        description: 'Implement a solution using appropriate design patterns.',
+        points: 250,
+        timeLimit: 2400,
+        codeTemplate: `// TODO: Implement an online shopping system using appropriate design patterns
+// Required patterns: Factory, Observer, Decorator
+// The system should allow creating products, notifying customers of price changes,
+// and adding features/addons to products dynamically
+
+// Product interface and implementations
+interface Product {
+    // Your code here
+}
+
+// Factory implementation
+class ProductFactory {
+    // Your code here
+}
+
+// Observer implementation for price notifications
+interface PriceObserver {
+    // Your code here
+}
+
+// Decorator implementation for product features
+abstract class ProductDecorator implements Product {
+    // Your code here
+}
+
+// Main class to demonstrate the pattern implementations
+public class ShoppingSystem {
+    public static void main(String[] args) {
+        // Your demo code here
+    }
+}`
+      },
+      {
+        id: 'concurrency',
+        title: 'Concurrent Data Processing',
+        description: 'Implement a concurrent solution for processing large datasets.',
+        points: 300,
+        timeLimit: 1800,
+        codeTemplate: `import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.*;
+
+// TODO: Implement a concurrent data processing system
+// The system should read data from multiple sources concurrently,
+// transform the data, and then aggregate the results
+
+class DataProcessor {
+    // Your code here
+}
+
+class DataSource {
+    private final String name;
+    
+    public DataSource(String name) {
+        this.name = name;
+    }
+    
+    public List<String> readData() {
+        // Simulate reading data from a source
+        try {
+            Thread.sleep(100); // Simulating I/O delay
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        List<String> data = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            data.add(name + "-data-" + i);
+        }
+        return data;
+    }
+}
+
+public class ConcurrencyExample {
+    public static void main(String[] args) {
+        // Your demo code here
+    }
+}`
+      }
+    ],
+    programmingLanguages: ['Java']
+  },
+  {
+    id: 'backend-api',
+    title: 'Backend API Challenge',
+    description: 'Design and implement robust backend APIs using various technologies.',
+    icon: 'Code',
+    category: 'Backend Development',
+    phase: 'Phase 2',
+    difficultyLevels: ['Intermediate', 'Advanced'],
+    academicLevels: ['2nd Year College', '3rd Year College', 'Final Year College', 'Masters'],
+    challenges: [
+      {
+        id: 'nodejs-api',
+        title: 'Node.js REST API',
+        description: 'Build a RESTful API with Node.js, Express, and MongoDB.',
+        points: 250,
+        timeLimit: 2400,
+        codeTemplate: `// TODO: Implement a RESTful API for a blog platform with the following features:
+// - User authentication (signup, login)
+// - CRUD operations for blog posts
+// - Comments functionality
+// - User profiles
+
+// File: server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const app = express();
+
+// Your code here
+
+// File: models/userModel.js
+const mongoose = require('mongoose');
+
+// Your code here
+
+// File: controllers/authController.js
+// Your code here
+
+// File: controllers/postController.js
+// Your code here
+
+// File: routes/apiRoutes.js
+// Your code here`
+      },
+      {
+        id: 'graphql-api',
+        title: 'GraphQL API Design',
+        description: 'Create a GraphQL API with proper schema design and resolver implementation.',
+        points: 300,
+        timeLimit: 2400,
+        codeTemplate: `// TODO: Implement a GraphQL API for an e-commerce platform with:
+// - Product catalog with categories
+// - User accounts and authentication
+// - Shopping cart functionality
+// - Order processing
+
+// File: schema.graphql
+// Your schema definitions here
+
+// File: resolvers.js
+// Your resolver implementations here
+
+// File: server.js
+const { ApolloServer } = require('apollo-server');
+const fs = require('fs');
+const path = require('path');
+
+// Your code here`
+      }
+    ],
+    programmingLanguages: ['JavaScript', 'TypeScript', 'Python', 'Java']
+  },
+  {
+    id: 'database-optimization',
+    title: 'Database Optimization',
+    description: 'Optimize database queries, design schemas, and improve performance.',
+    icon: 'LayoutGrid',
+    category: 'Database Management',
+    phase: 'Phase 2',
+    difficultyLevels: ['Advanced', 'Monster'],
+    academicLevels: ['3rd Year College', 'Final Year College', 'Masters', 'PhD'],
+    challenges: [
+      {
+        id: 'sql-optimization',
+        title: 'SQL Query Optimization',
+        description: 'Optimize complex SQL queries for better performance.',
+        points: 300,
+        timeLimit: 1800,
+        codeTemplate: `-- TODO: Optimize the following SQL queries for an e-commerce database
+
+-- Query 1: Find top customers by order total
+SELECT c.customer_id, c.name, SUM(o.total_amount) as total_spent
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_date >= '2023-01-01'
+GROUP BY c.customer_id, c.name
+ORDER BY total_spent DESC
+LIMIT 10;
+
+-- Query 2: Find products that are frequently purchased together
+SELECT p1.product_id, p2.product_id, COUNT(*) as frequency
+FROM order_items oi1
+JOIN order_items oi2 ON oi1.order_id = oi2.order_id
+JOIN products p1 ON oi1.product_id = p1.product_id
+JOIN products p2 ON oi2.product_id = p2.product_id
+WHERE p1.product_id < p2.product_id
+GROUP BY p1.product_id, p2.product_id
+ORDER BY frequency DESC
+LIMIT 20;
+
+-- Query 3: Calculate monthly sales by category
+SELECT 
+    DATE_FORMAT(o.order_date, '%Y-%m') as month,
+    pc.category_name,
+    SUM(oi.quantity * oi.price) as total_sales
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+JOIN products p ON oi.product_id = p.product_id
+JOIN product_categories pc ON p.category_id = pc.category_id
+WHERE o.order_date BETWEEN '2022-01-01' AND '2023-12-31'
+GROUP BY DATE_FORMAT(o.order_date, '%Y-%m'), pc.category_name
+ORDER BY month, total_sales DESC;`
+      },
+      {
+        id: 'nosql-design',
+        title: 'NoSQL Database Design',
+        description: 'Design an efficient NoSQL database schema for a social media platform.',
+        points: 250,
+        timeLimit: 1800,
+        codeTemplate: `// TODO: Design a MongoDB schema for a social media platform
+// Requirements:
+// - User profiles with followers/following
+// - Posts with comments and likes
+// - News feed generation
+// - Direct messaging
+// - Notifications
+
+// User schema
+const userSchema = {
+  // Your code here
+};
+
+// Post schema
+const postSchema = {
+  // Your code here
+};
+
+// Comment schema
+const commentSchema = {
+  // Your code here
+};
+
+// Message schema
+const messageSchema = {
+  // Your code here
+};
+
+// Notification schema
+const notificationSchema = {
+  // Your code here
+};
+
+// Indexing strategy
+const indexes = [
+  // Your indexing strategy here
 ];
 
+// Example queries
+const queries = {
+  // generateNewsFeed: {...},
+  // getUserFollowers: {...},
+  // getPostComments: {...},
+};`
+      }
+    ],
+    programmingLanguages: ['SQL', 'NoSQL', 'JavaScript', 'Python']
+  },
+  {
+    id: 'mobile-dev',
+    title: 'Mobile App Development',
+    description: 'Create components and features for mobile applications using various frameworks.',
+    icon: 'Code',
+    category: 'Mobile Development',
+    phase: 'Phase 1',
+    difficultyLevels: ['Intermediate', 'Advanced'],
+    academicLevels: ['2nd Year College', '3rd Year College', 'Final Year College'],
+    challenges: [
+      {
+        id: 'flutter-ui',
+        title: 'Flutter UI Challenge',
+        description: 'Build a complex UI component with Flutter and Dart.',
+        points: 200,
+        timeLimit: 1800,
+        codeTemplate: `// TODO: Implement an interactive contact card component in Flutter
+// The component should include:
+// - Profile picture with online status indicator
+// - Contact info with name, title, phone, email
+// - Expandable section for additional details
+// - Action buttons (call, message, video)
+// - Animations for state changes
+
+import 'package:flutter/material.dart';
+
+class ContactCard extends StatefulWidget {
+  // Your code here
+  
+  @override
+  _ContactCardState createState() => _ContactCardState();
+}
+
+class _ContactCardState extends State<ContactCard> with SingleTickerProviderStateMixin {
+  // Your code here
+  
+  @override
+  Widget build(BuildContext context) {
+    // Your code here
+    return Container();
+  }
+}`
+      },
+      {
+        id: 'react-native-nav',
+        title: 'React Native Navigation',
+        description: 'Implement a complex navigation system in React Native.',
+        points: 250,
+        timeLimit: 2100,
+        codeTemplate: `// TODO: Implement a navigation system for an e-commerce app with:
+// - Bottom tab navigation (Home, Search, Cart, Profile)
+// - Stack navigation for product details and checkout flow
+// - Drawer navigation for categories and settings
+// - Modal screens for quick actions
+// - Deep linking support
+
+import React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// Your code here
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      {/* Your navigation structure here */}
+    </NavigationContainer>
+  );
+}`
+      }
+    ],
+    programmingLanguages: ['Dart', 'JavaScript', 'TypeScript', 'Kotlin', 'Swift']
+  },
+  {
+    id: 'devops-challenge',
+    title: 'DevOps Automation',
+    description: 'Create automation scripts and workflows for modern DevOps practices.',
+    icon: 'Award',
+    category: 'DevOps',
+    phase: 'Phase 2',
+    difficultyLevels: ['Advanced', 'Monster'],
+    academicLevels: ['Final Year College', 'Masters', 'PhD'],
+    challenges: [
+      {
+        id: 'ci-pipeline',
+        title: 'CI Pipeline Configuration',
+        description: 'Create a comprehensive CI pipeline configuration for a web application.',
+        points: 300,
+        timeLimit: 1800,
+        codeTemplate: `# TODO: Create a GitHub Actions workflow for a full-stack web application
+# Requirements:
+# - Run tests for frontend (React) and backend (Node.js)
+# - Build and bundle the application
+# - Run security scanning
+# - Deploy to staging on PR merge to develop branch
+# - Deploy to production on release tag
+# - Send notifications on failure
+
+name: CI/CD Pipeline
+
+# Your workflow configuration here`
+      },
+      {
+        id: 'kubernetes-config',
+        title: 'Kubernetes Deployment',
+        description: 'Design a Kubernetes deployment for a microservices architecture.',
+        points: 350,
+        timeLimit: 2400,
+        codeTemplate: `# TODO: Create Kubernetes deployment files for a microservices application
+# The application consists of:
+# - Frontend service
+# - Authentication service
+# - Product catalog service
+# - Order processing service
+# - Database (PostgreSQL)
+# - Redis cache
+# - Message queue (RabbitMQ)
+
+# Requirements:
+# - Proper resource management
+# - Horizontal scaling for appropriate services
+# - Health checks and restart policies
+# - ConfigMaps and Secrets management
+# - Service discovery and load balancing
+# - Persistent storage for databases
+# - Ingress configuration
+
+# frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  # Your configuration here
+
+# Your additional K8s configuration files here`
+      }
+    ],
+    programmingLanguages: ['YAML', 'Shell', 'HCL', 'Docker']
+  },
+  {
+    id: 'system-design',
+    title: 'System Design Challenge',
+    description: 'Design scalable, resilient systems to solve complex architectural problems.',
+    icon: 'LayoutGrid',
+    category: 'Architecture',
+    phase: 'Phase 2',
+    difficultyLevels: ['Advanced', 'Monster'],
+    academicLevels: ['Final Year College', 'Masters', 'PhD'],
+    challenges: [
+      {
+        id: 'url-shortener',
+        title: 'URL Shortener Service',
+        description: 'Design a scalable URL shortening service like bit.ly.',
+        points: 350,
+        timeLimit: 3600,
+        codeTemplate: `// System Design Document: URL Shortener Service
+// 
+// Please provide a comprehensive design for a URL shortener service that can:
+// - Shorten long URLs to unique short URLs
+// - Redirect users from short URLs to original URLs
+// - Track analytics on URL usage
+// - Scale to handle millions of URLs and redirects
+// 
+// Your solution should include:
+// 1. High-level architecture diagram (describe it in text)
+// 2. API design
+// 3. Database schema
+// 4. Shortening algorithm explanation
+// 5. Caching strategy
+// 6. Scaling approach
+// 7. Analytics implementation
+// 8. Potential bottlenecks and solutions
+
+// Your design document here
+`
+      },
+      {
+        id: 'chat-system',
+        title: 'Real-time Chat System',
+        description: 'Design a scalable real-time chat system supporting millions of users.',
+        points: 400,
+        timeLimit: 3600,
+        codeTemplate: `// System Design Document: Real-time Chat System
+// 
+// Please provide a comprehensive design for a real-time chat system that:
+// - Supports one-on-one and group messaging
+// - Delivers messages in real-time with minimal latency
+// - Shows online/offline status and "typing" indicators
+// - Stores message history
+// - Supports media sharing (images, files)
+// - Can scale to millions of concurrent users
+// 
+// Your solution should include:
+// 1. High-level architecture diagram (describe it in text)
+// 2. Technology stack recommendations
+// 3. Data model
+// 4. API design
+// 5. Real-time communication approach
+// 6. Storage strategy for messages and media
+// 7. Scaling strategy for different components
+// 8. Handling edge cases (offline users, message delivery guarantees)
+
+// Your design document here
+`
+      }
+    ],
+    programmingLanguages: ['System Design', 'Architecture', 'Documentation']
+  }
+];
