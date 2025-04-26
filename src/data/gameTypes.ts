@@ -135,75 +135,160 @@ export const gameTypes: GameType[] = [
     programmingLanguages: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++']
   },
   {
-    id: 'typing-challenge',
-    title: 'Speed Typing Challenge',
-    description: 'Test your coding speed and accuracy by typing code snippets as fast as possible.',
+    id: 'typing-challenges',
+    title: 'Speed Typing Challenges',
+    description: 'Master typing code in various programming languages',
     icon: 'Code',
     category: 'Typing',
     phase: 'Phase 1',
     difficultyLevels: ['Beginner', 'Intermediate', 'Advanced'],
-    academicLevels: ['School Students', '1st Year College', '2nd Year College', '3rd Year College', 'Final Year College'],
+    academicLevels: ['School Students', '1st Year College', '2nd Year College', '3rd Year College'],
     challenges: [
       {
-        id: 'js-basics',
-        title: 'JavaScript Basics',
-        description: 'Type the following JavaScript basic syntax as fast as you can with high accuracy.',
+        id: 'python-basics',
+        title: 'Python Basics',
+        description: 'Practice typing Python code with proper indentation',
         points: 100,
-        timeLimit: 120,
-        codeTemplate: `function calculateArea(length, width) {
-  // Calculate the area of a rectangle
-  const area = length * width;
-  return area;
+        timeLimit: 180,
+        codeTemplate: `def calculate_factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * calculate_factorial(n - 1)
+
+def main():
+    numbers = [5, 7, 3, 8, 4]
+    results = []
+    
+    for num in numbers:
+        factorial = calculate_factorial(num)
+        results.append(factorial)
+    
+    print("Results:", results)
+
+if __name__ == "__main__":
+    main()`
+      },
+      {
+        id: 'typescript-interface',
+        title: 'TypeScript Interface',
+        description: 'Practice typing TypeScript interfaces and types',
+        points: 150,
+        timeLimit: 240,
+        codeTemplate: `interface User {
+  id: string;
+  name: string;
+  email: string;
+  age?: number;
+  roles: UserRole[];
 }
 
-const printMessage = (message) => {
-  console.log(\`The message is: \${message}\`);
-};
+type UserRole = 'admin' | 'user' | 'editor';
 
-// Create an array and filter even numbers
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const evenNumbers = numbers.filter(num => num % 2 === 0);`
+interface UserService {
+  getUser(id: string): Promise<User>;
+  updateUser(user: Partial<User>): Promise<void>;
+  deleteUser(id: string): Promise<boolean>;
+}
+
+class UserServiceImpl implements UserService {
+  async getUser(id: string): Promise<User> {
+    // Implementation
+    return {
+      id,
+      name: 'John Doe',
+      email: 'john@example.com',
+      roles: ['user']
+    };
+  }
+
+  async updateUser(user: Partial<User>): Promise<void> {
+    // Implementation
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    // Implementation
+    return true;
+  }
+}`
       },
       {
         id: 'react-component',
         title: 'React Component',
-        description: 'Type this React functional component with high accuracy.',
-        points: 150,
-        timeLimit: 180,
+        description: 'Practice typing a React functional component',
+        points: 200,
+        timeLimit: 300,
         codeTemplate: `import React, { useState, useEffect } from 'react';
 
-function UserProfile({ userId, onUpdate }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await fetch(\`/api/users/\${userId}\`);
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      } finally {
-        setLoading(false);
-      }
+interface TodoItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+export const TodoList: React.FC = () => {
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [newTodo, setNewTodo] = useState('');
+
+  const handleAddTodo = () => {
+    if (newTodo.trim()) {
+      const todo: TodoItem = {
+        id: Date.now().toString(),
+        text: newTodo.trim(),
+        completed: false
+      };
+      setTodos([...todos, todo]);
+      setNewTodo('');
     }
-    
-    fetchUser();
-  }, [userId]);
-  
-  if (loading) return <div>Loading...</div>;
-  
+  };
+
+  const toggleTodo = (id: string) => {
+    setTodos(todos.map(todo =>
+      todo.id === id
+        ? { ...todo, completed: !todo.completed }
+        : todo
+    ));
+  };
+
   return (
-    <div className="user-profile">
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-      <button onClick={() => onUpdate(user)}>
-        Edit Profile
-      </button>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          className="px-2 py-1 border rounded"
+          placeholder="Add new todo"
+        />
+        <button
+          onClick={handleAddTodo}
+          className="px-4 py-1 bg-blue-500 text-white rounded"
+        >
+          Add
+        </button>
+      </div>
+      <ul className="space-y-2">
+        {todos.map(todo => (
+          <li
+            key={todo.id}
+            className="flex items-center gap-2"
+            onClick={() => toggleTodo(todo.id)}
+          >
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              readOnly
+            />
+            <span className={todo.completed ? 'line-through' : ''}>
+              {todo.text}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}`
+};`
       }
     ],
     programmingLanguages: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++']

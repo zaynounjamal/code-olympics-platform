@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { gameTypes, Challenge } from '@/data/gameTypes';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Trophy, Lock, CheckSquare, XSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import CodeEditor from '@/components/games/CodeEditor';
+import TypingEditor from '@/components/games/TypingEditor';
 
 const ChallengeDetail = () => {
   const { gameId, challengeId } = useParams();
@@ -45,20 +45,18 @@ const ChallengeDetail = () => {
     setTimeRemaining(foundChallenge.timeLimit || 600);
   }, [gameId, challengeId, navigate, game]);
 
-  // Typing challenge logic
   const handleTyping = (newCode: string) => {
     if (!challenge || !game || game.category !== 'Typing') {
       setCode(newCode);
       return;
     }
     
-    if (!isRunning) {
+    if (!isRunning && !typingStats.completed) {
       startTimeRef.current = Date.now();
       setIsRunning(true);
       startTimer();
     }
     
-    // Calculate typing accuracy
     const template = challenge.codeTemplate || '';
     totalCharactersRef.current = newCode.length;
     correctCharactersRef.current = 0;
@@ -73,11 +71,9 @@ const ChallengeDetail = () => {
       ? 0 
       : (correctCharactersRef.current / totalCharactersRef.current) * 100;
     
-    // Calculate typing speed (characters per minute)
-    const timeElapsed = (Date.now() - (startTimeRef.current || Date.now())) / 1000 / 60; // in minutes
+    const timeElapsed = (Date.now() - (startTimeRef.current || Date.now())) / 1000 / 60;
     const speed = timeElapsed > 0 ? Math.round(totalCharactersRef.current / timeElapsed) : 0;
     
-    // Check if completed
     const completed = template === newCode;
     if (completed && !typingStats.completed) {
       stopTimer();
@@ -124,7 +120,6 @@ const ChallengeDetail = () => {
   const handleRunCode = () => {
     if (!challenge) return;
     
-    // For typing challenges, we check accuracy
     if (game?.category === 'Typing') {
       return;
     }
@@ -160,8 +155,6 @@ const ChallengeDetail = () => {
     
     for (const test of challenge.testCases) {
       try {
-        // This is a simplified implementation. In a real app, you'd need safer code execution
-        // eslint-disable-next-line no-new-func
         const executeFunction = new Function(`
           ${code}
           return eval(${JSON.stringify(test.input)});
@@ -305,7 +298,6 @@ const ChallengeDetail = () => {
                   </div>
                 )}
 
-                {/* Solution section with password protection */}
                 <div className="mt-6 border-t pt-4">
                   <h3 className="text-lg font-medium flex items-center mb-2">
                     <Lock className="w-4 h-4 mr-1" />
@@ -338,13 +330,23 @@ const ChallengeDetail = () => {
         </div>
         
         <div className="lg:w-2/3">
-          <CodeEditor
-            value={code}
-            onChange={handleTyping}
-            language={game?.programmingLanguages[0]?.toLowerCase() || 'javascript'}
-            height="70vh"
-            readOnly={timeRemaining === 0}
-          />
+          {game?.category === 'Typing' ? (
+            <TypingEditor
+              value={code}
+              onChange={handleTyping}
+              targetText={challenge.codeTemplate || ''}
+              height="70vh"
+              readOnly={timeRemaining === 0}
+            />
+          ) : (
+            <CodeEditor
+              value={code}
+              onChange={handleTyping}
+              language={game?.programmingLanguages[0]?.toLowerCase() || 'javascript'}
+              height="70vh"
+              readOnly={timeRemaining === 0}
+            />
+          )}
         </div>
       </div>
     </div>
