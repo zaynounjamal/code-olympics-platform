@@ -47,7 +47,7 @@ const ChallengeDetail = () => {
 
   // Typing challenge logic
   const handleTyping = (newCode: string) => {
-    if (!challenge || challenge.category !== 'Typing') {
+    if (!challenge || !game || game.category !== 'Typing') {
       setCode(newCode);
       return;
     }
@@ -214,16 +214,16 @@ const ChallengeDetail = () => {
         <div className="lg:w-1/3">
           <Card>
             <CardHeader>
-              <CardTitle>{challenge.title}</CardTitle>
+              <CardTitle>{challenge?.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <p className="text-muted-foreground">{challenge.description}</p>
+                <p className="text-muted-foreground">{challenge?.description}</p>
                 
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">
                     <Trophy className="w-4 h-4 mr-1" />
-                    {challenge.points} Points
+                    {challenge?.points} Points
                   </Badge>
                   
                   <Badge variant="outline">
