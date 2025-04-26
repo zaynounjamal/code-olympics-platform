@@ -11,6 +11,8 @@ import { AdminLayout } from "./components/admin/AdminLayout";
 import Home from "./pages/Home";
 import LiveMatches from "./pages/LiveMatches";
 import Games from "./pages/Games";
+import GameDetail from "./pages/GameDetail";
+import ChallengeDetail from "./pages/ChallengeDetail";
 import Leaderboard from "./pages/Leaderboard";
 import Faq from "./pages/Faq";
 
@@ -44,6 +46,16 @@ const App = () => (
           <Route path="/games" element={
             <Layout>
               <Games />
+            </Layout>
+          } />
+          <Route path="/games/:gameId" element={
+            <Layout>
+              <GameDetail />
+            </Layout>
+          } />
+          <Route path="/games/:gameId/:challengeId" element={
+            <Layout>
+              <ChallengeDetail />
             </Layout>
           } />
           <Route path="/leaderboard" element={
