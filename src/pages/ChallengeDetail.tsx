@@ -5,7 +5,7 @@ import { gameTypes, Challenge } from '@/data/gameTypes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Trophy, Lock, CheckSquare, XSquare, Eye } from 'lucide-react';
+import { Clock, Trophy, Eye, CheckSquare, XSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import CodeEditor from '@/components/games/CodeEditor';
 import TypingEditor from '@/components/games/TypingEditor';
@@ -19,12 +19,8 @@ const ChallengeDetail = () => {
   const [code, setCode] = useState('');
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [results, setResults] = useState<{success: boolean, message: string, testResults?: {passed: boolean, input: string, expected: string, actual: string}[]}>();
-  const [showSolution, setShowSolution] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [typingStats, setTypingStats] = useState({ accuracy: 0, speed: 0, completed: false });
-  const [solutionImage, setSolutionImage] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [typingStats, setTypingStats] = useState({ accuracy: 0, speed: 0, completed: false });
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const totalCharactersRef = useRef(0);
@@ -121,101 +117,8 @@ const ChallengeDetail = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  const handleRunCode = () => {
-    if (!challenge) return;
-    
-    if (game?.category === 'Typing') {
-      return;
-    }
-    
-    try {
-      const testResults = executeTests(code, challenge);
-      const allPassed = testResults.every(test => test.passed);
-      
-      setResults({
-        success: allPassed,
-        message: allPassed ? 'All tests passed!' : 'Some tests failed',
-        testResults
-      });
-      
-      if (allPassed) {
-        toast.success('Challenge completed successfully!');
-      } else {
-        toast.error('Some tests failed. Keep trying!');
-      }
-    } catch (error) {
-      setResults({
-        success: false,
-        message: `Error executing code: ${error}`
-      });
-      toast.error('Error executing code');
-    }
-  };
-
-  const executeTests = (code: string, challenge: Challenge) => {
-    if (!challenge.testCases) return [];
-    
-    const results = [];
-    
-    for (const test of challenge.testCases) {
-      try {
-        const executeFunction = new Function(`
-          ${code}
-          return eval(${JSON.stringify(test.input)});
-        `);
-        
-        const actual = String(executeFunction());
-        const passed = actual === test.expectedOutput;
-        
-        results.push({
-          passed,
-          input: test.input,
-          expected: test.expectedOutput,
-          actual
-        });
-      } catch (error) {
-        results.push({
-          passed: false,
-          input: test.input,
-          expected: test.expectedOutput,
-          actual: `Error: ${error}`
-        });
-      }
-    }
-    
-    return results;
-  };
-
-  const handleCheckPassword = () => {
-    if (passwordInput === '81428142') {
-      setShowSolution(true);
-      generateSolutionImage();
-      toast.success('Solution unlocked');
-    } else {
-      toast.error('Incorrect password');
-    }
-  };
-  
-  const generateSolutionImage = () => {
-    if (!challenge?.solution) return;
-    
-    // Use Carbon to generate code image
-    const language = game?.programmingLanguages?.[0]?.toLowerCase() || 'javascript';
-    const solutionCode = encodeURIComponent(challenge.solution);
-    
-    // Fixed image URL construction
-    const carbonUrl = `https://carbon.now.sh/?code=${solutionCode}&language=${language}&theme=nord`;
-    setSolutionImage(carbonUrl);
-  };
-  
   const handleViewSolution = () => {
-    if (challenge?.solution) {
-      // Ensure we have an image URL
-      if (!solutionImage) {
-        generateSolutionImage();
-      }
-      setDialogOpen(true);
-    }
+    setDialogOpen(true);
   };
 
   useEffect(() => {
@@ -227,6 +130,13 @@ const ChallengeDetail = () => {
   }, []);
 
   if (!challenge) return null;
+
+  const generateSolutionImage = () => {
+    if (!challenge?.solution) return null;
+    
+    // We'll directly display the formatted code instead of an external image
+    return challenge.solution;
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -283,78 +193,16 @@ const ChallengeDetail = () => {
                       </span>
                     </div>
                   </div>
-                ) : (
-                  <div>
-                    <Button 
-                      className="w-full mt-4" 
-                      onClick={handleRunCode}
-                    >
-                      Run Code
-                    </Button>
-                    
-                    {results && (
-                      <div className={`mt-4 p-4 rounded-md ${results.success ? 'bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300' : 'bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-300'}`}>
-                        <p className="font-medium mb-2">
-                          {results.success ? (
-                            <span className="flex items-center">
-                              <CheckSquare className="w-4 h-4 mr-1" />
-                              {results.message}
-                            </span>
-                          ) : (
-                            <span className="flex items-center">
-                              <XSquare className="w-4 h-4 mr-1" />
-                              {results.message}
-                            </span>
-                          )}
-                        </p>
-                        
-                        {results.testResults && (
-                          <div className="space-y-2 mt-2">
-                            {results.testResults.map((test, index) => (
-                              <div key={index} className={`p-2 rounded-md ${test.passed ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
-                                <p className="text-sm font-medium">Test {index + 1}</p>
-                                <p className="text-xs">Input: {test.input}</p>
-                                <p className="text-xs">Expected: {test.expected}</p>
-                                <p className="text-xs">Actual: {test.actual}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
+                ) : null}
 
-                <div className="mt-6 border-t pt-4">
-                  <h3 className="text-lg font-medium flex items-center mb-2">
-                    <Lock className="w-4 h-4 mr-1" />
-                    Access Solution
-                  </h3>
-                  
-                  {!showSolution ? (
-                    <div className="flex gap-2">
-                      <input 
-                        type="password"
-                        value={passwordInput}
-                        onChange={(e) => setPasswordInput(e.target.value)}
-                        placeholder="Enter password"
-                        className="border rounded-md px-3 py-1 flex-1"
-                      />
-                      <Button variant="outline" onClick={handleCheckPassword}>Unlock</Button>
-                    </div>
-                  ) : (
-                    <div className="bg-muted/50 p-3 rounded-md">
-                      <p className="text-sm mb-2 font-medium">Solution available:</p>
-                      <Button 
-                        className="w-full flex items-center justify-center gap-2"
-                        variant="outline"
-                        onClick={handleViewSolution}
-                      >
-                        <Eye className="h-4 w-4" />
-                        View Solution
-                      </Button>
-                    </div>
-                  )}
+                <div className="mt-6 pt-4">
+                  <Button 
+                    className="w-full flex items-center justify-center gap-2"
+                    onClick={handleViewSolution}
+                  >
+                    <Eye className="h-4 w-4" />
+                    View Solution
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -397,22 +245,8 @@ const ChallengeDetail = () => {
             {challenge.solution ? (
               <div className="flex flex-col items-center">
                 <pre className="bg-muted p-4 rounded-lg overflow-x-auto w-full mb-4">
-                  <code>{challenge.solution}</code>
+                  <code className="language-javascript">{generateSolutionImage()}</code>
                 </pre>
-                {solutionImage && (
-                  <div className="mt-4">
-                    <p className="text-sm text-center mb-2 text-muted-foreground">Solution Image:</p>
-                    <img 
-                      src={solutionImage}
-                      alt="Code solution" 
-                      className="rounded-lg shadow-lg max-w-full" 
-                      onError={() => {
-                        console.error("Failed to load solution image");
-                        toast.error("Failed to load solution image");
-                      }}
-                    />
-                  </div>
-                )}
               </div>
             ) : (
               <div className="text-center p-4">No solution available</div>

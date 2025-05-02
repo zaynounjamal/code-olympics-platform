@@ -39,7 +39,7 @@ const Games = () => {
     return Array.from(languages).sort();
   }, []);
 
-  // Filter games based on search term, selected phases and languages
+  // Filter games based on search term and selected languages only (ignore phase filter)
   const filteredGames = useMemo(() => {
     return gameTypes.filter(game => {
       // Filter by search term
@@ -50,16 +50,13 @@ const Games = () => {
         game.difficultyLevels.some(level => level.toLowerCase().includes(searchTerm.toLowerCase())) ||
         game.programmingLanguages.some(lang => lang.toLowerCase().includes(searchTerm.toLowerCase()));
       
-      // Filter by selected phases
-      const matchesPhase = selectedPhases.length === 0 || selectedPhases.includes(game.phase);
-      
       // Filter by selected languages
       const matchesLanguage = selectedLanguages.length === 0 || 
         game.programmingLanguages.some(lang => selectedLanguages.includes(lang));
       
-      return matchesSearch && matchesPhase && matchesLanguage;
+      return matchesSearch && matchesLanguage;
     });
-  }, [searchTerm, selectedPhases, selectedLanguages]);
+  }, [searchTerm, selectedLanguages]);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -80,37 +77,6 @@ const Games = () => {
         </div>
         
         <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Filter className="h-4 w-4" />
-                Phases
-                {selectedPhases.length > 0 && (
-                  <Badge variant="secondary" className="ml-1 h-5 px-1">
-                    {selectedPhases.length}
-                  </Badge>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40">
-              {['Phase 1', 'Phase 2'].map((phase) => (
-                <DropdownMenuCheckboxItem
-                  key={phase}
-                  checked={selectedPhases.includes(phase)}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      setSelectedPhases([...selectedPhases, phase]);
-                    } else {
-                      setSelectedPhases(selectedPhases.filter(p => p !== phase));
-                    }
-                  }}
-                >
-                  {phase}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2">
@@ -144,11 +110,7 @@ const Games = () => {
         </div>
       </div>
 
-      {selectedPhases.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Select at least one phase to view games</p>
-        </div>
-      ) : filteredGames.length === 0 ? (
+      {filteredGames.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground">No games match your search criteria</p>
         </div>
