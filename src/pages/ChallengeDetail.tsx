@@ -131,13 +131,6 @@ const ChallengeDetail = () => {
 
   if (!challenge) return null;
 
-  const generateSolutionImage = () => {
-    if (!challenge?.solution) return null;
-    
-    // We'll directly display the formatted code instead of an external image
-    return challenge.solution;
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -244,8 +237,10 @@ const ChallengeDetail = () => {
           <div className="mt-4 overflow-auto max-h-[70vh] rounded-lg">
             {challenge.solution ? (
               <div className="flex flex-col items-center">
-                <pre className="bg-muted p-4 rounded-lg overflow-x-auto w-full mb-4">
-                  <code className="language-javascript">{generateSolutionImage()}</code>
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto w-full mb-4 text-sm">
+                  <code className="language-javascript whitespace-pre-wrap font-mono">
+                    {challenge.solution}
+                  </code>
                 </pre>
               </div>
             ) : (

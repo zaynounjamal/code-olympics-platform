@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { GameType } from '@/data/gameTypes';
-import { Trophy, Gamepad2, Award, ArrowRight, Clock, Lock } from 'lucide-react';
+import { Trophy, Gamepad2, Award, ArrowRight, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface GameCardProps {
@@ -95,26 +95,15 @@ export const GameCard = ({ game, onPlay, showChallenges = true }: GameCardProps)
           </div>
         </div>
         <div className="mt-4">
-          {game.phase === 'Phase 2' ? (
+          <Link to={`/games/${game.id}`} className="w-full">
             <Button 
               className="w-full" 
               onClick={() => onPlay?.(game.id)}
-              disabled
             >
-              <Lock className="mr-2 h-4 w-4" />
-              Registration Required
+              <Gamepad2 className="mr-2 h-4 w-4" />
+              Play Now
             </Button>
-          ) : (
-            <Link to={`/games/${game.id}`} className="w-full">
-              <Button 
-                className="w-full" 
-                onClick={() => onPlay?.(game.id)}
-              >
-                <Gamepad2 className="mr-2 h-4 w-4" />
-                Play Now
-              </Button>
-            </Link>
-          )}
+          </Link>
         </div>
       </CardContent>
     </Card>

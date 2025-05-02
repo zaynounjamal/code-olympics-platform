@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, CheckSquare } from 'lucide-react';
+import { Search, CheckSquare } from 'lucide-react';
 import { GameCard } from '@/components/games/GameCard';
 import { gameTypes } from '@/data/gameTypes';
 import { toast } from 'sonner';
