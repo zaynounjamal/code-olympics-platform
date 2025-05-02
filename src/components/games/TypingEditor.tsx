@@ -14,6 +14,7 @@ const TypingEditor = ({ targetText, onChange, value, readOnly = false, height = 
   const [lineNumbers, setLineNumbers] = useState<string[]>([]);
 
   useEffect(() => {
+    // Generate line numbers based on the target text
     const lines = targetText.split('\n');
     setLineNumbers(Array.from({ length: lines.length }, (_, i) => String(i + 1)));
   }, [targetText]);

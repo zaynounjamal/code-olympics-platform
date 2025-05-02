@@ -1,13 +1,15 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { gameTypes, Challenge } from '@/data/gameTypes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Trophy, Lock, CheckSquare, XSquare } from 'lucide-react';
+import { Clock, Trophy, Lock, CheckSquare, XSquare, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import CodeEditor from '@/components/games/CodeEditor';
 import TypingEditor from '@/components/games/TypingEditor';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const ChallengeDetail = () => {
   const { gameId, challengeId } = useParams();
@@ -21,6 +23,8 @@ const ChallengeDetail = () => {
   const [showSolution, setShowSolution] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [typingStats, setTypingStats] = useState({ accuracy: 0, speed: 0, completed: false });
+  const [solutionImage, setSolutionImage] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const totalCharactersRef = useRef(0);
@@ -185,9 +189,30 @@ const ChallengeDetail = () => {
   const handleCheckPassword = () => {
     if (passwordInput === '81428142') {
       setShowSolution(true);
+      generateSolutionImage();
       toast.success('Solution unlocked');
     } else {
       toast.error('Incorrect password');
+    }
+  };
+  
+  const generateSolutionImage = () => {
+    if (!challenge?.solution) return;
+    
+    // Use Snapiffy to generate an image of the code
+    const language = game?.programmingLanguages[0]?.toLowerCase() || 'javascript';
+    const solutionCode = challenge.solution;
+    
+    // Prepare the code for Snapiffy
+    const snapiffyUrl = `https://snapiffy.com/api/snap?code=${encodeURIComponent(solutionCode)}&language=${language}&theme=dark`;
+    
+    // Set the solution image URL
+    setSolutionImage(snapiffyUrl);
+  };
+  
+  const handleViewSolution = () => {
+    if (solutionImage) {
+      setDialogOpen(true);
     }
   };
 
@@ -317,10 +342,15 @@ const ChallengeDetail = () => {
                     </div>
                   ) : (
                     <div className="bg-muted/50 p-3 rounded-md">
-                      <p className="text-sm mb-2 font-medium">Solution:</p>
-                      <pre className="text-xs overflow-x-auto bg-muted p-2 rounded">
-                        <code>{challenge.solution}</code>
-                      </pre>
+                      <p className="text-sm mb-2 font-medium">Solution available:</p>
+                      <Button 
+                        className="w-full flex items-center justify-center gap-2"
+                        variant="outline"
+                        onClick={handleViewSolution}
+                      >
+                        <Eye className="h-4 w-4" />
+                        View Solution
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -349,6 +379,29 @@ const ChallengeDetail = () => {
           )}
         </div>
       </div>
+      
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Trophy className="h-5 w-5 mr-2 text-yellow-500" />
+              Solution for {challenge.title}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="mt-4 overflow-hidden rounded-lg">
+            {solutionImage && (
+              <div className="flex justify-center">
+                <img 
+                  src={solutionImage} 
+                  alt="Code solution" 
+                  className="rounded-lg shadow-lg max-h-[70vh]" 
+                  style={{ maxWidth: '100%' }}
+                />
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
