@@ -16,6 +16,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Faq from "./pages/Faq";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
+import McqQuestions from "./pages/McqQuestions";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,11 @@ const App = () => (
           <Route path="/games/:gameId/:challengeId" element={
             <Layout>
               <ChallengeDetail />
+            </Layout>
+          } />
+          <Route path="/mcq" element={
+            <Layout>
+              <McqQuestions />
             </Layout>
           } />
           <Route path="/leaderboard" element={

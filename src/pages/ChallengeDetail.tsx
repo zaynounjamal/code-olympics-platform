@@ -5,7 +5,7 @@ import { gameTypes, Challenge } from '@/data/gameTypes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Trophy, Lock, CheckSquare, XSquare, Eye, EyeOff } from 'lucide-react';
+import { Clock, Trophy, Lock, CheckSquare, XSquare, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import CodeEditor from '@/components/games/CodeEditor';
 import TypingEditor from '@/components/games/TypingEditor';
@@ -199,19 +199,25 @@ const ChallengeDetail = () => {
   const generateSolutionImage = () => {
     if (!challenge?.solution) return;
     
-    // Use Snapiffy to generate an image of the code
-    const language = game?.programmingLanguages[0]?.toLowerCase() || 'javascript';
-    const solutionCode = challenge.solution;
+    // Use a direct approach to create the solution image
+    const language = game?.programmingLanguages?.[0]?.toLowerCase() || 'javascript';
+    const solutionCode = encodeURIComponent(challenge.solution);
     
-    // Prepare the code for Snapiffy
-    const snapiffyUrl = `https://snapiffy.com/api/snap?code=${encodeURIComponent(solutionCode)}&language=${language}&theme=dark`;
+    // Set the solution image URL - using Carbon instead of Snapiffy which seems to have issues
+    const carbonUrl = `https://carbon.now.sh/api/cook?code=${solutionCode}&language=${language}&theme=nord`;
+    setSolutionImage(carbonUrl);
     
-    // Set the solution image URL
-    setSolutionImage(snapiffyUrl);
+    // Alternative approaches if Carbon doesn't work
+    // const prismUrl = `https://prismjs.com/prism.js?code=${solutionCode}&language=${language}`;
+    // setSolutionImage(prismUrl);
   };
   
   const handleViewSolution = () => {
-    if (solutionImage) {
+    if (challenge?.solution) {
+      // Ensure we have an image URL
+      if (!solutionImage) {
+        generateSolutionImage();
+      }
       setDialogOpen(true);
     }
   };
@@ -291,7 +297,7 @@ const ChallengeDetail = () => {
                     </Button>
                     
                     {results && (
-                      <div className={`mt-4 p-4 rounded-md ${results.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                      <div className={`mt-4 p-4 rounded-md ${results.success ? 'bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300' : 'bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-300'}`}>
                         <p className="font-medium mb-2">
                           {results.success ? (
                             <span className="flex items-center">
@@ -309,7 +315,7 @@ const ChallengeDetail = () => {
                         {results.testResults && (
                           <div className="space-y-2 mt-2">
                             {results.testResults.map((test, index) => (
-                              <div key={index} className={`p-2 rounded-md ${test.passed ? 'bg-green-100' : 'bg-red-100'}`}>
+                              <div key={index} className={`p-2 rounded-md ${test.passed ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
                                 <p className="text-sm font-medium">Test {index + 1}</p>
                                 <p className="text-xs">Input: {test.input}</p>
                                 <p className="text-xs">Expected: {test.expected}</p>
@@ -388,16 +394,23 @@ const ChallengeDetail = () => {
               Solution for {challenge.title}
             </DialogTitle>
           </DialogHeader>
-          <div className="mt-4 overflow-hidden rounded-lg">
-            {solutionImage && (
-              <div className="flex justify-center">
-                <img 
-                  src={solutionImage} 
-                  alt="Code solution" 
-                  className="rounded-lg shadow-lg max-h-[70vh]" 
-                  style={{ maxWidth: '100%' }}
-                />
-              </div>
+          <div className="mt-4 overflow-auto max-h-[70vh] rounded-lg">
+            {challenge.solution ? (
+              solutionImage ? (
+                <div className="flex justify-center">
+                  <img 
+                    src={solutionImage} 
+                    alt="Code solution" 
+                    className="rounded-lg shadow-lg max-w-full" 
+                  />
+                </div>
+              ) : (
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                  <code>{challenge.solution}</code>
+                </pre>
+              )
+            ) : (
+              <div className="text-center p-4">No solution available</div>
             )}
           </div>
         </DialogContent>

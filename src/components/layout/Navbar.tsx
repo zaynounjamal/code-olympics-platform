@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Trophy, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Menu, X, Trophy } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 export function Navbar() {
@@ -25,6 +24,9 @@ export function Navbar() {
           <Link to="/games" className="text-foreground/80 hover:text-festival-primary transition-colors">
             Games
           </Link>
+          <Link to="/mcq" className="text-foreground/80 hover:text-festival-primary transition-colors">
+            MCQ Questions
+          </Link>
           <Link to="/leaderboard" className="text-foreground/80 hover:text-festival-primary transition-colors">
             Leaderboard
           </Link>
@@ -33,15 +35,9 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Right Section - Theme Toggle and Auth */}
+        {/* Right Section - Theme Toggle */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          <Link to="/admin">
-            <Button variant="outline" size="sm" className="hidden sm:flex">
-              <Users className="mr-2 h-4 w-4" />
-              Admin
-            </Button>
-          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -77,6 +73,13 @@ export function Navbar() {
               Games
             </Link>
             <Link
+              to="/mcq"
+              className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              MCQ Questions
+            </Link>
+            <Link
               to="/leaderboard"
               className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
               onClick={() => setIsMenuOpen(false)}
@@ -89,13 +92,6 @@ export function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               FAQ
-            </Link>
-            <Link
-              to="/admin"
-              className="px-4 py-2 text-festival-primary font-medium"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Admin Dashboard
             </Link>
           </div>
         </div>
