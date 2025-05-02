@@ -9,7 +9,7 @@ import { Clock, Trophy, Lock, CheckSquare, XSquare, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import CodeEditor from '@/components/games/CodeEditor';
 import TypingEditor from '@/components/games/TypingEditor';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 const ChallengeDetail = () => {
   const { gameId, challengeId } = useParams();
@@ -199,17 +199,13 @@ const ChallengeDetail = () => {
   const generateSolutionImage = () => {
     if (!challenge?.solution) return;
     
-    // Use a direct approach to create the solution image
+    // Use Carbon to generate code image
     const language = game?.programmingLanguages?.[0]?.toLowerCase() || 'javascript';
     const solutionCode = encodeURIComponent(challenge.solution);
     
-    // Set the solution image URL - using Carbon instead of Snapiffy which seems to have issues
-    const carbonUrl = `https://carbon.now.sh/api/cook?code=${solutionCode}&language=${language}&theme=nord`;
+    // Fixed image URL construction
+    const carbonUrl = `https://carbon.now.sh/?code=${solutionCode}&language=${language}&theme=nord`;
     setSolutionImage(carbonUrl);
-    
-    // Alternative approaches if Carbon doesn't work
-    // const prismUrl = `https://prismjs.com/prism.js?code=${solutionCode}&language=${language}`;
-    // setSolutionImage(prismUrl);
   };
   
   const handleViewSolution = () => {
@@ -393,22 +389,31 @@ const ChallengeDetail = () => {
               <Trophy className="h-5 w-5 mr-2 text-yellow-500" />
               Solution for {challenge.title}
             </DialogTitle>
+            <DialogDescription>
+              Review the solution below to understand the approach
+            </DialogDescription>
           </DialogHeader>
           <div className="mt-4 overflow-auto max-h-[70vh] rounded-lg">
             {challenge.solution ? (
-              solutionImage ? (
-                <div className="flex justify-center">
-                  <img 
-                    src={solutionImage} 
-                    alt="Code solution" 
-                    className="rounded-lg shadow-lg max-w-full" 
-                  />
-                </div>
-              ) : (
-                <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+              <div className="flex flex-col items-center">
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto w-full mb-4">
                   <code>{challenge.solution}</code>
                 </pre>
-              )
+                {solutionImage && (
+                  <div className="mt-4">
+                    <p className="text-sm text-center mb-2 text-muted-foreground">Solution Image:</p>
+                    <img 
+                      src={solutionImage}
+                      alt="Code solution" 
+                      className="rounded-lg shadow-lg max-w-full" 
+                      onError={() => {
+                        console.error("Failed to load solution image");
+                        toast.error("Failed to load solution image");
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="text-center p-4">No solution available</div>
             )}

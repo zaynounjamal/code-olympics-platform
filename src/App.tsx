@@ -8,11 +8,9 @@ import { Layout } from "./components/layout/Layout";
 
 // User Pages
 import Home from "./pages/Home";
-import LiveMatches from "./pages/LiveMatches";
 import Games from "./pages/Games";
 import GameDetail from "./pages/GameDetail";
 import ChallengeDetail from "./pages/ChallengeDetail";
-import Leaderboard from "./pages/Leaderboard";
 import Faq from "./pages/Faq";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
@@ -29,11 +27,6 @@ const App = () => (
         <Routes>
           {/* User Routes */}
           <Route path="/" element={<Index />} />
-          <Route path="/live" element={
-            <Layout>
-              <LiveMatches />
-            </Layout>
-          } />
           <Route path="/games" element={
             <Layout>
               <Games />
@@ -52,11 +45,6 @@ const App = () => (
           <Route path="/mcq" element={
             <Layout>
               <McqQuestions />
-            </Layout>
-          } />
-          <Route path="/leaderboard" element={
-            <Layout>
-              <Leaderboard />
             </Layout>
           } />
           <Route path="/faq" element={

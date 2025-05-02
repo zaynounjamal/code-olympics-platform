@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 
 const Games = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  // Make all phases selected by default
   const [selectedPhases, setSelectedPhases] = useState<string[]>(['Phase 1', 'Phase 2']);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   
@@ -143,9 +144,9 @@ const Games = () => {
         </div>
       </div>
 
-      {selectedPhases.length === 0 && selectedLanguages.length === 0 ? (
+      {selectedPhases.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Select at least one phase or language to view games</p>
+          <p className="text-muted-foreground">Select at least one phase to view games</p>
         </div>
       ) : filteredGames.length === 0 ? (
         <div className="text-center py-12">

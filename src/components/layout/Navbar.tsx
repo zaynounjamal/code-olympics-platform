@@ -18,17 +18,11 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link to="/live" className="text-foreground/80 hover:text-festival-primary transition-colors">
-            Live Matches
-          </Link>
           <Link to="/games" className="text-foreground/80 hover:text-festival-primary transition-colors">
             Games
           </Link>
           <Link to="/mcq" className="text-foreground/80 hover:text-festival-primary transition-colors">
             MCQ Questions
-          </Link>
-          <Link to="/leaderboard" className="text-foreground/80 hover:text-festival-primary transition-colors">
-            Leaderboard
           </Link>
           <Link to="/faq" className="text-foreground/80 hover:text-festival-primary transition-colors">
             FAQ
@@ -59,13 +53,6 @@ export function Navbar() {
         <div className="md:hidden bg-background border-t p-4">
           <div className="flex flex-col space-y-4">
             <Link
-              to="/live"
-              className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Live Matches
-            </Link>
-            <Link
               to="/games"
               className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
               onClick={() => setIsMenuOpen(false)}
@@ -78,13 +65,6 @@ export function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               MCQ Questions
-            </Link>
-            <Link
-              to="/leaderboard"
-              className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Leaderboard
             </Link>
             <Link
               to="/faq"

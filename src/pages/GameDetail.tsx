@@ -5,7 +5,7 @@ import { gameTypes } from '@/data/gameTypes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Gamepad2, Trophy, Clock, ArrowLeft, ArrowRight, Lock } from 'lucide-react';
+import { Gamepad2, Trophy, Clock, ArrowLeft, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
 const GameDetail = () => {
@@ -27,10 +27,7 @@ const GameDetail = () => {
   }
 
   const handleStartGame = (challengeId: string) => {
-    if (game.phase === 'Phase 2') {
-      toast.error('This game requires registration and can only be started by an admin');
-      return;
-    }
+    toast.success(`Starting ${game.title}`);
   };
 
   const iconMap = {
@@ -64,9 +61,7 @@ const GameDetail = () => {
               <h1 className="text-3xl font-bold">{game.title}</h1>
               <div className="flex flex-wrap gap-2 mt-1">
                 <Badge>{game.category}</Badge>
-                <Badge variant={game.phase === 'Phase 2' ? 'outline' : 'default'}>
-                  {game.phase}
-                </Badge>
+                <Badge variant="default">{game.phase}</Badge>
               </div>
             </div>
           </div>
@@ -107,23 +102,13 @@ const GameDetail = () => {
           <Card>
             <CardContent className="p-6">
               <div className="space-y-4">
-                {game.phase === 'Phase 2' ? (
-                  <div className="bg-amber-50 text-amber-800 p-4 rounded-lg border border-amber-200 flex gap-3 mb-4">
-                    <Lock className="h-5 w-5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium mb-1">Registration Required</p>
-                      <p className="text-sm">This phase requires registration and will be started by the admin.</p>
-                    </div>
+                <div className="bg-green-50 text-green-800 p-4 rounded-lg border border-green-200 flex gap-3 mb-4 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800/30">
+                  <Gamepad2 className="h-5 w-5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium mb-1">Available for Everyone</p>
+                    <p className="text-sm">Start playing right away!</p>
                   </div>
-                ) : (
-                  <div className="bg-green-50 text-green-800 p-4 rounded-lg border border-green-200 flex gap-3 mb-4">
-                    <Gamepad2 className="h-5 w-5 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium mb-1">Open for All</p>
-                      <p className="text-sm">No registration required. Start playing right away!</p>
-                    </div>
-                  </div>
-                )}
+                </div>
                 
                 <div>
                   <h3 className="font-medium mb-2">Programming Languages</h3>
@@ -177,23 +162,12 @@ const GameDetail = () => {
                 )}
                 
                 <div>
-                  {game.phase === 'Phase 2' ? (
-                    <Button 
-                      className="w-full" 
-                      onClick={() => handleStartGame(challenge.id)}
-                      disabled
-                    >
-                      <Lock className="mr-2 h-4 w-4" />
-                      Registration Required
+                  <Link to={`/games/${game.id}/${challenge.id}`} className="w-full">
+                    <Button className="w-full">
+                      Start Challenge
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
-                  ) : (
-                    <Link to={`/games/${game.id}/${challenge.id}`} className="w-full">
-                      <Button className="w-full">
-                        Start Challenge
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  )}
+                  </Link>
                 </div>
               </CardContent>
             </Card>
