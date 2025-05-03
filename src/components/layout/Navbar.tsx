@@ -21,9 +21,6 @@ export function Navbar() {
           <Link to="/games" className="text-foreground/80 hover:text-festival-primary transition-colors">
             Games
           </Link>
-          <Link to="/mcq" className="text-foreground/80 hover:text-festival-primary transition-colors">
-            MCQ Questions
-          </Link>
           <Link to="/faq" className="text-foreground/80 hover:text-festival-primary transition-colors">
             FAQ
           </Link>
@@ -58,13 +55,6 @@ export function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Games
-            </Link>
-            <Link
-              to="/mcq"
-              className="px-4 py-2 text-foreground/80 hover:text-festival-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              MCQ Questions
             </Link>
             <Link
               to="/faq"
